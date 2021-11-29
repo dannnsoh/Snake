@@ -1,58 +1,25 @@
-from turtle import Turtle, Screen, shape
-
-screen = Screen()
-screen.setup(width=900, height=800)
-
-# TODO 1. Create snake body
-
-snake = Turtle(shape="square")
-snake.speed(1)
-snake.penup()
-snake.shapesize(0.8, 2.4)
-
-# TODO 2. Move the snake
-
-steps = 1000
-# heading()
-# tracer()
-# pensize()
+from turtle import Turtle
 
 
-def m_forward():
-    snake.setheading(90)
-    snake.forward(steps)
+class Snake:
+    def __init__(self):
+        self.segments = []
+        # * Create starting snake body
+        start_x = -60
+        for _ in range(3):
+            seg = Turtle(shape="square")
+            seg.penup()
+            seg.color("white")
+            seg.goto(start_x, 0)
+            start_x += 20
+            self.segments.append(seg)
 
-
-def m_back():
-    snake.setheading(270)
-    snake.forward(steps)
-
-
-def m_left():
-    snake.setheading(180)
-    snake.forward(steps)
-
-
-def m_right():
-    snake.setheading(0)
-    snake.forward(steps)
-
-
-screen.onkeypress(m_forward, "Up")
-screen.onkeypress(m_back, "Down")
-screen.onkeypress(m_left, "Left")
-screen.onkeypress(m_right, "Right")
-screen.listen()
-
-# TODO 3. Create snake food
-
-food = Turtle(shape="circle", visible=False)
-food.shapesize(0.6)
-food.color("#dfc05b")
-
-# TODO 4. Detect collision with food
-# TODO 5. Create scoreboard
-# TODO 6. Detect collision with wall
-# TODO 7. Detect collision with tail
-
-screen.exitonclick()
+    def move(self):
+        # movement: last seg move to 2nd seg's position, 2nd seg move to 1st, 1st move to new position, and so on...
+        # so instead of first seg moving first, last seg will move first
+        # so index will be from 2 -> 1 -> 0 in a snake body of 3 segments
+        # range will start will last index and step to first index
+        for seg in range(len(self.segments) - 1, 0, -1):
+            next_seg_position = self.segments[seg - 1].position()
+            self.segments[seg].goto(next_seg_position)
+        self.segments[0].forward(20)
