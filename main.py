@@ -1,55 +1,14 @@
 from turtle import Turtle, Screen
-from random import randint
-import time
 from snake import Snake
+from food import Food
+import time
 
 screen = Screen()
-screen.setup(width=900, height=800)
+screen.setup(width=800, height=800)
 screen.bgcolor("black")
 screen.title("Snake Game")
 screen.tracer(0)
 
-snake = Snake()
-
-# TODO 2. Move the snake
-
-gameOn = True
-while gameOn:
-    screen.update()
-    time.sleep(0.03)
-    snake.move()
-
-
-# TODO 3. Create snake food
-
-food = Turtle(shape="circle", visible=False)
-food.penup()
-food.speed(10)
-food.color("white")
-
-
-def spawn_food():
-    food.hideturtle()
-    food.goto(randint(-430, 430), randint(-380, 365))
-    food.showturtle()
-
-
-spawn_food()
-
-
-# TODO 4. Detect collision with food
-
-# snake_x, snake_y = snake.position()
-food_x, food_y = food.position()
-
-# while (
-#     food_x - 10 <= snake_x <= food_x + 10
-#     or food_y - 10 <= snake_y <= food_y + 10
-# ):
-#     print("EAT")
-#     spawn_food()
-
-# TODO 5. Create scoreboard
 
 score = 0
 
@@ -64,8 +23,29 @@ text.write(
     font=("Arial", 18, "bold"),
 )
 
+snake = Snake()
+food = Food()
+food.spawn()
+
+screen.listen()
+screen.onkeypress(snake.up, "Up")
+screen.onkeypress(snake.down, "Down")
+screen.onkeypress(snake.left, "Left")
+screen.onkeypress(snake.right, "Right")
+
+gameOn = True
+
+while gameOn:
+    screen.update()
+    time.sleep(0.05)
+    snake.move()
+
+    # todo: detect collision with food
+    if snake.head.distance(food.position()) <= 15:
+        food.spawn()
+
+
 # TODO 6. Detect collision with wall
 # TODO 7. Detect collision with tail
 
-screen.listen()
 screen.exitonclick()
