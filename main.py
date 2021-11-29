@@ -5,7 +5,7 @@ from scoreboard import Scoreboard
 import time
 
 screen = Screen()
-screen.setup(width=800, height=800)
+screen.setup(width=600, height=600)
 screen.bgcolor("black")
 screen.title("Snake Game")
 screen.tracer(0)
@@ -29,22 +29,22 @@ while gameOn:
     snake.move()
 
     # todo: detect collision with food
-    if snake.head.distance(food.position()) <= 15:
-        scoreboard.update()
+    if snake.head.distance(food) <= 15:
         food.spawn()
+        snake.extend()
+        scoreboard.update()
 
     # todo: Detect collision with wall
     if (
-        not -380 <= snake.head.xcor() <= 380
-        or not -380 <= snake.head.ycor() <= 360
+        not -280 <= snake.head.xcor() <= 280
+        or not -280 <= snake.head.ycor() <= 260
     ):
         scoreboard.game_over()
         gameOn = False
 
     # todo: Detect collision with tail
-    for n in range(1, len(snake.segments) - 1):
-        seg = snake.segments[n]
-        if snake.head.distance(seg.position()) <= 15:
+    for seg in snake.segments[1:]:
+        if snake.head.distance(seg) <= 10:
             scoreboard.game_over()
             gameOn = False
 

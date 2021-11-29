@@ -12,5 +12,5 @@ class Food(Turtle):
 
     def spawn(self):
         self.hideturtle()
-        self.goto(randint(-380, 380), randint(-380, 360))
+        self.goto(randint(-280, 280), randint(-280, 260))
         self.showturtle()
